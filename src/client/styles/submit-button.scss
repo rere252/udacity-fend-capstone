@@ -1,0 +1,23 @@
+@use './variables' as v;
+
+.submit-button {
+  margin-top: auto;
+  border: 1px solid black;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  &:hover {
+    background: rgb(230, 230, 230);
+  }
+  &:active {
+    margin-bottom: -1px;
+  }
+}
+
+@media (max-width: v.$mobile-break-width) {
+  .submit-button {
+    margin-top: 2rem;
+  }
+}

@@ -1,0 +1,35 @@
+@use './variables' as v;
+@use './two-panel';
+@use './submit-button';
+@use './destination-form';
+@use './footer';
+@use './loader';
+@use './trip-summary.scss';
+@use './swal-theme';
+
+html * {
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  width: 100vw;
+  color: #fff;
+  background: v.$site-background-color;
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+}
+
+main {
+  align-self: center;
+  justify-self: center;
+}

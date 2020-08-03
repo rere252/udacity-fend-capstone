@@ -1,0 +1,8 @@
+@use './variables' as v;
+
+.swal-button {
+  background-color: v.$pink;
+  &:not([disabled]):hover {
+    background-color: v.$pink;
+  }
+}
