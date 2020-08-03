@@ -1,11 +1,12 @@
-import { DestinationController } from './controller/destination.controller';
+import { TripController } from './controller/trip.controller';
 import { ApiRouter } from './route/api.router';
 import { Server } from './server';
 import { ReflectiveInjector } from 'injection-js';
+import { GeoNamesService } from './service/geo-names.service';
 
-const controllers = [DestinationController];
+const controllers = [TripController];
 const routers = [ApiRouter];
-const services = [];
+const services = [GeoNamesService];
 const util = [];
 
 const declarations = [...controllers, ...routers, ...services, ...util, Server];

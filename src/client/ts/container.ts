@@ -1,7 +1,7 @@
 import { Client } from './client';
-import { DestinationService } from './service/destination.service';
+import { TripInfoService } from './service/trip-info.service';
 import { ReflectiveInjector } from 'injection-js';
 
-const declarations = [Client, DestinationService];
+const declarations = [Client, TripInfoService];
 
 export const container = ReflectiveInjector.resolveAndCreate(declarations);

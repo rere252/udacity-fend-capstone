@@ -1,9 +1,9 @@
 import { BaseComponent } from './base-component';
 import { SubmitButtonComponent } from './submit-button.component';
-import { DestinationService } from '../service/destination.service';
+import { TripInfoService } from '../service/trip-info.service';
 
 export class DestinationFormComponent extends BaseComponent {
-  private submitButton: SubmitButtonComponent;
+  private tripInfoButton: SubmitButtonComponent;
   // TODO type
   private _onDestinationSubmitted: (resp: unknown) => void;
   private readonly loaderID = 'loader';
@@ -17,20 +17,20 @@ export class DestinationFormComponent extends BaseComponent {
     return this.loaderDIV.classList.contains(this.loadingClass);
   }
 
-  constructor(private destinationService: DestinationService) {
+  constructor(private tripService: TripInfoService) {
     super('destinationForm');
-    this.submitButton = new SubmitButtonComponent('submitArticleButton', 'Analyze');
+    this.tripInfoButton = new SubmitButtonComponent('submitArticleButton', 'Get Trip Info');
   }
 
   getChildren(): BaseComponent[] {
-    return [this.submitButton];
+    return [this.tripInfoButton];
   }
 
   getTemplate(): string {
     return `
       <form id="${this.id}" class="destination-form">
         <div id="${this.loaderID}"></div>
-        ${this.submitButton.getTemplate()}
+        ${this.tripInfoButton.getTemplate()}
       </form>
     `;
   }
@@ -46,7 +46,7 @@ export class DestinationFormComponent extends BaseComponent {
   }
 
   private toggleLoading() {
-    const button = this.submitButton.nativeElement;
+    const button = this.tripInfoButton.nativeElement;
     button.disabled = !button.disabled;
     this.loaderDIV.classList.toggle(this.loadingClass);
   }
@@ -57,5 +57,11 @@ export class DestinationFormComponent extends BaseComponent {
       return;
     }
     this.toggleLoading();
+    this.tripService
+      .postDestination('koju palun')
+      .then((resp) => {
+        console.log(resp);
+      })
+      .finally(() => this.toggleLoading());
   }
 }
