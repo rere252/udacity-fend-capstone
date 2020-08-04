@@ -10,6 +10,10 @@ function start(): void {
     throw new Error('GeoNames username is missing.');
   }
 
+  if (!process.env.WEATHERBIT_API_KEY) {
+    throw new Error('Weatherbit API key is missing.');
+  }
+
   const server: Server = container.get(Server);
   server.init();
 }
