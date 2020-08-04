@@ -6,5 +6,5 @@ export interface GeoCodeAddress {
   lat: number;
   countryCode: string;
   /** City */
-  adminName2: string;
+  locality: string;
 }

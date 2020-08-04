@@ -1,7 +1,7 @@
 import { Injectable } from 'injection-js';
-import { BaseHttpService } from '../../common/service/base-http.service';
-import { GeoCodeAddress } from '../model/geo-code-address.model';
 import { WeatherInfo } from '../../common/model/weather-info.model';
+import { BaseHttpService } from '../../common/service/base-http.service';
+import { Position } from '../model/position.model';
 
 @Injectable()
 export class WeatherbitService extends BaseHttpService {
@@ -11,25 +11,25 @@ export class WeatherbitService extends BaseHttpService {
   private readonly currentWeatherUrl = `${this.baseUrl}/current?${this.keyArg}`;
   private readonly weatherForecastUrl = `${this.baseUrl}/forecast/daily?${this.keyArg}`;
 
-  getCurrentWeather(geoAddr: GeoCodeAddress): Promise<WeatherInfo> {
-    return this.getWeatherByLatLon(this.currentWeatherUrl, geoAddr);
+  getCurrentWeather(position: Position): Promise<WeatherInfo> {
+    return this.getWeatherByLatLon(this.currentWeatherUrl, position);
   }
 
-  getWeatherForecast(geoAddr: GeoCodeAddress): Promise<WeatherInfo> {
-    return this.getWeatherByLatLon(this.weatherForecastUrl, geoAddr);
+  getWeatherForecast(position: Position): Promise<WeatherInfo> {
+    return this.getWeatherByLatLon(this.weatherForecastUrl, position);
   }
 
-  private getWeatherByLatLon(url: string, geoAddr): Promise<WeatherInfo> {
+  private getWeatherByLatLon(url: string, position: Position): Promise<WeatherInfo> {
     return this.axios
-      .get(this.getLatLonUrl(url, geoAddr))
+      .get(this.getLatLonUrl(url, position))
       .then((r) => r.data)
       .catch(() => {
         throw new Error('Failed to get weather data.');
       });
   }
 
-  private getLatLonUrl(endpointUrl: string, geoAddr: GeoCodeAddress) {
-    const adr = geoAddr;
+  private getLatLonUrl(endpointUrl: string, position: Position) {
+    const adr = position;
     return `${endpointUrl}&lat=${adr.lat}&lon=${adr.lng}`;
   }
 }
