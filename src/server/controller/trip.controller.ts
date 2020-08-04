@@ -6,6 +6,7 @@ import { WeatherbitService } from '../service/weatherbit.service';
 import { PixabayService } from '../service/pixabay.servce';
 import { HereMapsService } from '../service/here-maps.service';
 import { Position } from '../model/position.model';
+import { TripInfoResponse } from '../../common/model/trip-info.response';
 
 @Injectable()
 export class TripController extends BaseController {
@@ -24,32 +25,46 @@ export class TripController extends BaseController {
   async handle(req: Request, resp: Response, next: NextFunction) {
     const location = 'võru';
     try {
-      let locationLabel: string;
-      let locPosition: Position;
-      const hereLoc = await this.hereService.getAddress(location);
-      if (hereLoc) {
-        locationLabel = hereLoc.title;
-        locPosition = hereLoc.position;
-      } else {
-        const geoNamesAddress = await this.geoNamesService.getGeoCodeAddress(location);
-        locationLabel = `${geoNamesAddress.locality}, ${geoNamesAddress.countryCode}`;
-        locPosition = {
-          lat: geoNamesAddress.lat,
-          lng: geoNamesAddress.lng
-        };
-      }
-      const weather = await this.weatherService.getCurrentWeather(locPosition);
-      const imageUrls = await this.imageService.getImageUrls('estonia', location);
-      console.log(locationLabel);
-      console.log(weather);
-      console.log(imageUrls);
-      resp.json({
-        locationLabel,
+      const labeledPos = await this.getLabeledPosition(location);
+      const weather = await this.weatherService.getCurrentWeather(labeledPos.position);
+      const imageUrl = await this.imageService.getImageUrl(labeledPos.country, labeledPos.city);
+      const tripInfo: TripInfoResponse = {
+        label: labeledPos.label,
         weather,
-        imageUrls
-      });
+        imageUrl
+      };
+      resp.json(tripInfo);
     } catch (e) {
       next(e);
     }
   }
+
+  private async getLabeledPosition(location: string) {
+    const labeledPos = {} as LabeledPosition;
+    const hereLoc = await this.hereService.getAddress(location);
+    if (hereLoc) {
+      labeledPos.label = hereLoc.title;
+      labeledPos.position = hereLoc.position;
+      labeledPos.country = hereLoc.address.countryName;
+      labeledPos.city = hereLoc.address.city;
+    } else {
+      const geoNamesAddress = await this.geoNamesService.getGeoCodeAddress(location);
+      labeledPos.label = `${geoNamesAddress.locality}, ${geoNamesAddress.countryCode}`;
+      labeledPos.position = {
+        lat: geoNamesAddress.lat,
+        lng: geoNamesAddress.lng
+      };
+      labeledPos.country = geoNamesAddress.countryCode;
+      // Locality isn't really a city, but it could help.
+      labeledPos.city = geoNamesAddress.locality;
+    }
+    return labeledPos;
+  }
+}
+
+interface LabeledPosition {
+  label: string;
+  position: Position;
+  city: string;
+  country: string;
 }

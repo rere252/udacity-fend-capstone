@@ -8,6 +8,7 @@ import { HereLocationItem } from '../model/here/here-location-item.model';
 export class HereMapsService extends BaseHttpService {
   private readonly keyParam = `apiKey=${process.env.HERE_API_KEY}`;
   private readonly limitParam = 'limit=1';
+  private readonly langParam = 'lang=en';
   private readonly apiUrl = `https://discover.search.hereapi.com/v1/geocode?${this.getStaticParams()}`;
 
   getAddress(location: string): Promise<HereLocationItem> {
@@ -26,6 +27,6 @@ export class HereMapsService extends BaseHttpService {
   }
 
   private getStaticParams() {
-    return [this.keyParam, this.limitParam].join('&');
+    return [this.keyParam, this.limitParam, this.langParam].join('&');
   }
 }

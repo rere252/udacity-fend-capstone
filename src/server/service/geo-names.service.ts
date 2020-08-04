@@ -1,9 +1,12 @@
 import { Injectable } from 'injection-js';
 import { BaseHttpService } from '../../common/service/base-http.service';
-import { GeoCodeAddress } from '../model/geo-code-address.model';
+import { GeoCodeAddress } from '../model/geonames/geo-code-address.model';
 import { AxiosResponse } from 'axios';
-import { GeonamesResponse } from '../model/geonames.response';
+import { GeonamesResponse } from '../model/geonames/geonames.response';
 
+/**
+ * Wouldn't use this API but it's an Udacity requirement so kept it as a fallback.
+ */
 @Injectable()
 export class GeoNamesService extends BaseHttpService {
   private readonly apiUrl = `https://secure.geonames.org/geoCodeAddressJSON?username=${process.env.GEO_NAMES_USERNAME}&q=`;
