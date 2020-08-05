@@ -9,9 +9,9 @@ import { TripInfoResponse } from '../../../common/model/trip-info.response';
 export class TripInfoService extends BaseHttpService {
   private readonly endpoint = `${Endpoints.Prefix}${Endpoints.TripInfo}`;
 
-  postDestination(destination: string): Promise<TripInfoResponse> {
+  postDestination(destination: string, departure: Date): Promise<TripInfoResponse> {
     return this.axios
-      .post(this.endpoint, { destination })
+      .post(this.endpoint, { destination, departure })
       .then((r) => r.data)
       .catch((e) => {
         const error: SimpleError = e.response.data;

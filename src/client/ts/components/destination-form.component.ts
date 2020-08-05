@@ -6,6 +6,7 @@ import { TextInputComponent } from './text-input.component';
 
 export class DestinationFormComponent extends BaseComponent {
   private destinationField: TextInputComponent;
+  private departureDateField: TextInputComponent;
   private tripInfoButton: SubmitButtonComponent;
   private _onDestinationSubmitted: (resp: TripInfoResponse) => void;
   private readonly loaderID = 'loader';
@@ -24,19 +25,28 @@ export class DestinationFormComponent extends BaseComponent {
       'Destination',
       'text',
       'Where would You like to go?',
+      'Destination',
       'destinationCityField'
+    );
+    this.departureDateField = new TextInputComponent(
+      'Departure Date',
+      'date',
+      null,
+      'Departure',
+      'destinationDateField'
     );
     this.tripInfoButton = new SubmitButtonComponent('submitArticleButton', 'Get Trip Info');
   }
 
   getChildren(): BaseComponent[] {
-    return [this.destinationField, this.tripInfoButton];
+    return [this.destinationField, this.departureDateField, this.tripInfoButton];
   }
 
   getTemplate(): string {
     return `
       <form id="${this.id}" class="destination-form">
         ${this.destinationField.getTemplate()}
+        ${this.departureDateField.getTemplate()}
         <div id="${this.loaderID}"></div>
         ${this.tripInfoButton.getTemplate()}
       </form>
@@ -66,7 +76,7 @@ export class DestinationFormComponent extends BaseComponent {
     }
     this.toggleLoading();
     this.tripService
-      .postDestination(this.destinationField.nativeElement.value)
+      .postDestination(this.destinationField.nativeElement.value, this.departureDateField.nativeElement.valueAsDate)
       .then((resp) => {
         console.log(resp);
       })
