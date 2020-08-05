@@ -77,9 +77,7 @@ export class DestinationFormComponent extends BaseComponent {
     this.toggleLoading();
     this.tripService
       .postDestination(this.destinationField.nativeElement.value, this.departureDateField.nativeElement.valueAsDate)
-      .then((resp) => {
-        console.log(resp);
-      })
+      .then((resp) => this._onDestinationSubmitted(resp))
       .finally(() => this.toggleLoading());
   }
 }

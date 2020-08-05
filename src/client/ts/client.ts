@@ -4,6 +4,7 @@ import { TwoPanelComponent } from './components/two-panel.component';
 import { DestinationFormComponent } from './components/destination-form.component';
 import { TripSummaryComponent } from './components/trip-summary.component';
 import { FooterComponent } from './components/footer.component';
+import { TripInfoResponse } from '../../common/model/trip-info.response';
 
 @Injectable()
 export class Client {
@@ -15,9 +16,9 @@ export class Client {
 
   private initComponents(): void {
     const formPanel = new DestinationFormComponent(this.tripService);
-    const tripSummaryPanel = new TripSummaryComponent();
+    const tripSummaryPanel = new TripSummaryComponent('tripSummaryPanel');
+    formPanel.onResponse = (resp) => this.onSubmitted(tripSummaryPanel, resp);
     const twoPanel = new TwoPanelComponent('Travel App', formPanel, tripSummaryPanel);
-    formPanel.onResponse = (resp) => this.onSubmitted(twoPanel, resp);
     const footer = new FooterComponent();
     this.attachComponents(twoPanel, footer);
   }
@@ -33,9 +34,7 @@ export class Client {
     footer.onAttached();
   }
 
-  // TODO type fixes
-  private onSubmitted(twoPanel: TwoPanelComponent, resp: unknown) {
-    twoPanel.updateRightPanel(new TripSummaryComponent(resp as string));
-    twoPanel.leftPanel.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  private onSubmitted(tripSummaryPanel: TripSummaryComponent, resp: TripInfoResponse) {
+    tripSummaryPanel.tripInfo = resp;
   }
 }

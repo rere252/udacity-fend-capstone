@@ -8,27 +8,29 @@ $right: 'right';
   grid-template-columns: repeat(2, 45vw);
   grid-template-rows: 86vh;
   grid-template-areas: '#{$left} #{$right}';
-  margin: 2rem;
+  margin: v.$standard-margin;
   min-width: 90vw;
-  border-radius: 2rem;
+  border-radius: v.$standard-border-radius;
   box-shadow: 0 3px 4px 4px rgba(0, 0, 0, 0.47);
   &__left {
     grid-area: $left;
     background: v.$pink;
-    border-radius: 2rem 0 0 2rem;
+    border-radius: v.$standard-border-radius 0 0 v.$standard-border-radius;
     display: flex;
     flex-direction: column;
     font-weight: 300;
-    padding: 2rem;
   }
   &__right {
     grid-area: $right;
-    padding: 2rem;
     color: black;
     background: v.$green;
-    border-radius: 0 2rem 2rem 0;
+    border-radius: 0 v.$standard-border-radius v.$standard-border-radius 0;
     display: flex;
     flex-direction: column;
+  }
+
+  h1 {
+    margin: v.$standard-margin;
   }
 }
 

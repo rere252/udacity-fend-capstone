@@ -1,3 +1,10 @@
+@use 'variables' as v;
+
 .trip-summary {
   font-weight: 300;
+
+  &__banner {
+    max-width: 100%;
+    border-radius: 0 v.$standard-border-radius 0 0;
+  }
 }
