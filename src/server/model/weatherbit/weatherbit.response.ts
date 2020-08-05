@@ -1,4 +1,4 @@
-import { WeatherInfo } from '../../common/model/weather-info.model';
+import { WeatherInfo } from '../../../common/model/weather-info.model';
 
 export interface WeatherbitResponse {
   weather: WeatherInfo;

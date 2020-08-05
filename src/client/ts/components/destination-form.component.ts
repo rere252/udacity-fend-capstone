@@ -1,16 +1,17 @@
 import { BaseComponent } from './base-component';
 import { SubmitButtonComponent } from './submit-button.component';
 import { TripInfoService } from '../service/trip-info.service';
+import { TripInfoResponse } from '../../../common/model/trip-info.response';
+import { TextInputComponent } from './text-input.component';
 
 export class DestinationFormComponent extends BaseComponent {
+  private destinationField: TextInputComponent;
   private tripInfoButton: SubmitButtonComponent;
-  // TODO type
-  private _onDestinationSubmitted: (resp: unknown) => void;
+  private _onDestinationSubmitted: (resp: TripInfoResponse) => void;
   private readonly loaderID = 'loader';
   private readonly loadingClass = 'loading';
   private loaderDIV: HTMLElement;
-  // TODO type
-  set onResponse(cb: (resp: unknown) => void) {
+  set onResponse(cb: (resp: TripInfoResponse) => void) {
     this._onDestinationSubmitted = cb;
   }
   get isLoading(): boolean {
@@ -19,16 +20,23 @@ export class DestinationFormComponent extends BaseComponent {
 
   constructor(private tripService: TripInfoService) {
     super('destinationForm');
+    this.destinationField = new TextInputComponent(
+      'Destination',
+      'text',
+      'Where would You like to go?',
+      'destinationCityField'
+    );
     this.tripInfoButton = new SubmitButtonComponent('submitArticleButton', 'Get Trip Info');
   }
 
   getChildren(): BaseComponent[] {
-    return [this.tripInfoButton];
+    return [this.destinationField, this.tripInfoButton];
   }
 
   getTemplate(): string {
     return `
       <form id="${this.id}" class="destination-form">
+        ${this.destinationField.getTemplate()}
         <div id="${this.loaderID}"></div>
         ${this.tripInfoButton.getTemplate()}
       </form>
@@ -58,7 +66,7 @@ export class DestinationFormComponent extends BaseComponent {
     }
     this.toggleLoading();
     this.tripService
-      .postDestination('koju palun')
+      .postDestination(this.destinationField.nativeElement.value)
       .then((resp) => {
         console.log(resp);
       })

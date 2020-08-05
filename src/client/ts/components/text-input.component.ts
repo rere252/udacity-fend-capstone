@@ -8,9 +8,9 @@ export class TextInputComponent extends BaseComponent {
     private label: string,
     private type: string,
     private placeHolder: string,
-    matchPatternRegex: RegExp,
-    private patternTip: string,
-    id: string
+    id: string,
+    matchPatternRegex?: RegExp,
+    private patternTip?: string
   ) {
     super(id);
     // Remove leading and trailing '/'.
@@ -20,8 +20,12 @@ export class TextInputComponent extends BaseComponent {
   getTemplate(): string {
     return `
       <label for="${this.id}">${this.label}</label>
-      <input type="${this.type}" name="${this.id}" id="${this.id}" title="${this.patternTip}"
-        placeholder="${this.placeHolder}" pattern="${this.matchPattern}" required>
+      <input type="${this.type}" name="${this.id}" id="${this.id}"
+        placeholder="${this.placeHolder}" ${this.getValidationAttr()} required>
     `;
+  }
+
+  private getValidationAttr() {
+    return this.matchPattern ? `match="${this.matchPattern}" title="${this.patternTip}"` : '';
   }
 }

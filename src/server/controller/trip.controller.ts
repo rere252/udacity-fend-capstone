@@ -23,9 +23,9 @@ export class TripController extends BaseController {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   async handle(req: Request, resp: Response, next: NextFunction) {
-    const location = 'võru';
+    const destination = req.body.destination;
     try {
-      const labeledPos = await this.getLabeledPosition(location);
+      const labeledPos = await this.getLabeledPosition(destination);
       const weather = await this.weatherService.getCurrentWeather(labeledPos.position);
       const imageUrl = await this.imageService.getImageUrl(labeledPos.country, labeledPos.city);
       const tripInfo: TripInfoResponse = {
