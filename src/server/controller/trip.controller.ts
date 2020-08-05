@@ -23,15 +23,17 @@ export class TripController extends BaseController {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   async handle(req: Request, resp: Response, next: NextFunction) {
-    const destination = req.body.destination;
+    const destination: string = req.body.destination;
+    const departure: Date = req.body.departure;
     try {
       const labeledPos = await this.getLabeledPosition(destination);
       const weather = await this.weatherService.getCurrentWeather(labeledPos.position);
-      const imageUrl = await this.imageService.getImageUrl(labeledPos.country, labeledPos.city);
+      const image = await this.imageService.getImageInfo(labeledPos.country, labeledPos.city);
       const tripInfo: TripInfoResponse = {
         label: labeledPos.label,
         weather,
-        imageUrl
+        image,
+        departure
       };
       resp.json(tripInfo);
     } catch (e) {

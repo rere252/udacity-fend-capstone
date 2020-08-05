@@ -1,6 +1,7 @@
 import { Injectable } from 'injection-js';
 import { BaseHttpService } from '../../common/service/base-http.service';
 import { PixabayResponse } from '../model/pixabay/pixabay.response';
+import { ImageInfo } from '../../common/model/image-info.model';
 
 @Injectable()
 export class PixabayService extends BaseHttpService {
@@ -13,7 +14,7 @@ export class PixabayService extends BaseHttpService {
   private readonly perPageParam = 'per_page=3';
   private readonly apiUrl = `https://pixabay.com/api/${this.getStaticParams()}`;
 
-  async getImageUrl(country: string, city: string): Promise<string> {
+  async getImageInfo(country: string, city: string): Promise<ImageInfo> {
     try {
       const specificQuery = encodeURI(`${country}+${city}`);
       let imgURLs = await this.requestTheURLs(specificQuery);
@@ -21,7 +22,12 @@ export class PixabayService extends BaseHttpService {
         const broaderQuery = encodeURI(`${country}`);
         imgURLs = await this.requestTheURLs(broaderQuery);
       }
-      return Promise.resolve(imgURLs.hits[0]?.largeImageURL);
+      const hit = imgURLs.hits[0];
+      const imgInf: ImageInfo = {
+        imageUrl: hit?.webformatURL,
+        height: hit?.webformatHeight
+      };
+      return Promise.resolve(imgInf);
     } catch (e) {
       console.error(e);
       throw new Error('Failed to retrieve destination image');

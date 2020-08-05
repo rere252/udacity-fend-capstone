@@ -5,7 +5,7 @@ export class FooterComponent extends BaseComponent {
     return `
       <footer>
         <div>
-          Udacity Front End Web Developer Nanodegree Program Project #4: Evaluate a news article with Natural Language Processing
+          Udacity Front End Web Developer Nanodegree Program Project #5: FEND Capstone - Travel App
         </div>
       </footer>
     `;
