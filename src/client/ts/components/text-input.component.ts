@@ -19,9 +19,11 @@ export class TextInputComponent extends BaseComponent {
 
   getTemplate(): string {
     return `
-      <label for="${this.id}">${this.label}</label>
-      <input type="${this.type}" name="${this.id}" id="${this.id}" title="${this.title}"
-        placeholder="${this.placeHolder}" ${this.getValidationAttr()} required>
+      <div class="text-input-container">
+        <label for="${this.id}">${this.label}:</label>
+        <input type="${this.type}" name="${this.id}" id="${this.id}" title="${this.title}"
+          placeholder="${this.placeHolder}" ${this.getValidationAttr()} required>
+      </div>
     `;
   }
 

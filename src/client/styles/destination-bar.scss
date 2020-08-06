@@ -1,0 +1,30 @@
+@use 'variables' as v;
+
+label {
+  margin-right: 0.25rem;
+}
+
+input {
+  margin-right: 0.25rem;
+  font-size: 1rem;
+}
+
+.destination-bar {
+  color: #000;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 2.5rem;
+  border-radius: 0 0 v.$standard-border-radius v.$standard-border-radius;
+  padding: 1rem;
+  background: #fff;
+  &__fields {
+    display: flex;
+    justify-content: center;
+  }
+  &__submit {
+    display: flex;
+    align-items: center;
+  }
+}

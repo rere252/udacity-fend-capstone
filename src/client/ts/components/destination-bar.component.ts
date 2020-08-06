@@ -4,13 +4,13 @@ import { TripInfoService } from '../service/trip-info.service';
 import { TripInfoResponse } from '../../../common/model/trip-info.response';
 import { TextInputComponent } from './text-input.component';
 
-export class DestinationFormComponent extends BaseComponent {
+export class DestinationBarComponent extends BaseComponent {
   private destinationField: TextInputComponent;
   private departureDateField: TextInputComponent;
   private tripInfoButton: SubmitButtonComponent;
   private _onDestinationSubmitted: (resp: TripInfoResponse) => void;
   private readonly loaderID = 'loader';
-  private readonly loadingClass = 'loading';
+  private readonly loadingClass = 'lds-hourglass';
   private loaderDIV: HTMLElement;
   set onResponse(cb: (resp: TripInfoResponse) => void) {
     this._onDestinationSubmitted = cb;
@@ -20,11 +20,11 @@ export class DestinationFormComponent extends BaseComponent {
   }
 
   constructor(private tripService: TripInfoService) {
-    super('destinationForm');
+    super('destinationBar');
     this.destinationField = new TextInputComponent(
       'Destination',
       'text',
-      'Where would You like to go?',
+      'Where to?',
       'Destination',
       'destinationCityField'
     );
@@ -44,11 +44,15 @@ export class DestinationFormComponent extends BaseComponent {
 
   getTemplate(): string {
     return `
-      <form id="${this.id}" class="destination-form">
-        ${this.destinationField.getTemplate()}
-        ${this.departureDateField.getTemplate()}
-        <div id="${this.loaderID}"></div>
-        ${this.tripInfoButton.getTemplate()}
+      <form id="${this.id}" class="destination-bar">
+        <div class="destination-bar__fields">
+          ${this.destinationField.getTemplate()}
+          ${this.departureDateField.getTemplate()}
+        </div>
+        <div class="destination-bar__submit">
+          ${this.tripInfoButton.getTemplate()}
+          <div class="loader" id="${this.loaderID}"></div>
+        </div>
       </form>
     `;
   }

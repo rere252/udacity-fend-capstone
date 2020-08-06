@@ -8,6 +8,6 @@ export class SubmitButtonComponent extends BaseComponent {
   }
 
   getTemplate(): string {
-    return `<button id="${this.id}" class="submit-button" type="submit">${this.buttonText}</button>`;
+    return `<button id="${this.id}" class="submit-button flex-end" type="submit">${this.buttonText}</button>`;
   }
 }
