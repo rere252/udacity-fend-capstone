@@ -6,6 +6,8 @@ export class TripSummaryComponent extends BaseComponent {
   private _tripInfo: TripInfoResponse;
   set tripInfo(info: TripInfoResponse) {
     this._tripInfo = info;
+    // It's initially a date string;
+    this._tripInfo.departure = new Date(this._tripInfo.departure);
     this.updateDOM();
   }
 
@@ -39,6 +41,7 @@ export class TripSummaryComponent extends BaseComponent {
     summaryDiv.className = `${this.tripSummaryClass}__text`;
     summaryDiv.appendChild(this.getDestinationHeading());
     summaryDiv.appendChild(this.getDepartureHeading());
+    summaryDiv.appendChild(this.getDaysCountdown());
     summaryDiv.appendChild(this.getWeather());
     return summaryDiv;
   }
@@ -51,7 +54,7 @@ export class TripSummaryComponent extends BaseComponent {
 
   private getDepartureHeading(): HTMLElement {
     const heading = document.createElement('h3');
-    const date = new Date(this._tripInfo.departure);
+    const date = this._tripInfo.departure;
     const formatted = [date.getDate(), date.getMonth() + 1, date.getFullYear()].join('/');
     heading.textContent = `Departure: ${formatted}`;
     return heading;
@@ -64,7 +67,10 @@ export class TripSummaryComponent extends BaseComponent {
     const details = document.createElement('ul');
     details.style.margin = '0';
     const wInfo = this._tripInfo.weather;
-    [wInfo.weather.description, wInfo.temp + '&#8451;'].forEach((wItem) => {
+    const descr = wInfo.weather.description;
+    const temp = `${wInfo.temp}'&#8451;`;
+    const wind = `Wind speed ${Math.round(Number(wInfo.wind_spd))} m/s`;
+    [descr, temp, wind].forEach((wItem) => {
       const li = document.createElement('li');
       li.innerHTML = String(wItem);
       details.appendChild(li);
@@ -73,5 +79,23 @@ export class TripSummaryComponent extends BaseComponent {
     p.appendChild(heading);
     p.appendChild(details);
     return p;
+  }
+
+  private getDaysCountdown(): HTMLElement {
+    const heading = document.createElement('h3');
+    const daysDiff = this.daysBetween(new Date(), this._tripInfo.departure);
+    const days = daysDiff !== 1 ? 'days' : 'day';
+    heading.innerText = `${daysDiff} ${days} until departure`;
+    return heading;
+  }
+
+  private daysBetween(d1: Date, d2: Date) {
+    const diffMS = Math.abs(d1.getTime() - d2.getTime());
+    const secInMS = 1000;
+    const minuteInMS = 60 * secInMS;
+    const hourInMS = 60 * minuteInMS;
+    const dayInMS = 24 * hourInMS;
+    const diffDays = Math.ceil(diffMS / dayInMS);
+    return diffDays;
   }
 }

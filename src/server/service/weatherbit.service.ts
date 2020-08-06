@@ -43,7 +43,7 @@ export class WeatherbitService extends BaseHttpService {
   }
 
   private removeExcessProps(weatherInfo: WeatherInfo): WeatherInfo {
-    const { country_code, temp, clouds, weather } = weatherInfo;
-    return { country_code, temp, clouds, weather };
+    const { country_code, temp, clouds, weather, wind_spd } = weatherInfo;
+    return { country_code, temp, clouds, weather, wind_spd };
   }
 }
