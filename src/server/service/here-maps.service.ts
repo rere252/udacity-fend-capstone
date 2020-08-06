@@ -3,13 +3,19 @@ import { BaseHttpService } from '../../common/service/base-http.service';
 import { AxiosResponse } from 'axios';
 import { HereResponse } from '../model/here/here.response';
 import { HereLocationItem } from '../model/here/here-location-item.model';
+import { ApiKeysService } from './api-keys.service';
 
 @Injectable()
 export class HereMapsService extends BaseHttpService {
-  private readonly keyParam = `apiKey=${process.env.HERE_API_KEY}`;
   private readonly limitParam = 'limit=1';
   private readonly langParam = 'lang=en';
-  private readonly apiUrl = `https://discover.search.hereapi.com/v1/geocode?${this.getStaticParams()}`;
+  private readonly apiUrl: string;
+
+  constructor(apiKeysService: ApiKeysService) {
+    super();
+    const apiKeyParam = `apiKey=${apiKeysService.HERE_API_KEY}`;
+    this.apiUrl = `https://discover.search.hereapi.com/v1/geocode?${apiKeyParam}&${this.getStaticParams()}`;
+  }
 
   getAddress(location: string): Promise<HereLocationItem> {
     return this.axios
@@ -27,6 +33,6 @@ export class HereMapsService extends BaseHttpService {
   }
 
   private getStaticParams() {
-    return [this.keyParam, this.limitParam, this.langParam].join('&');
+    return [this.limitParam, this.langParam].join('&');
   }
 }

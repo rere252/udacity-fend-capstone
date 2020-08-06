@@ -2,17 +2,23 @@ import { Injectable } from 'injection-js';
 import { BaseHttpService } from '../../common/service/base-http.service';
 import { PixabayResponse } from '../model/pixabay/pixabay.response';
 import { ImageInfo } from '../../common/model/image-info.model';
+import { ApiKeysService } from './api-keys.service';
 
 @Injectable()
 export class PixabayService extends BaseHttpService {
-  private readonly keyParam = `key=${process.env.PIXABAY_API_KEY}`;
   private readonly typeParam = 'image_type=photo';
   private readonly orientationParam = 'orientation=horizontal';
   private readonly safeParam = 'safesearch=true';
   private readonly categoryParam = 'category=travel';
   // 3 is the lowest possible value.
   private readonly perPageParam = 'per_page=3';
-  private readonly apiUrl = `https://pixabay.com/api/${this.getStaticParams()}`;
+  private readonly apiUrl: string;
+
+  constructor(apiKeys: ApiKeysService) {
+    super();
+    const keyParam = `key=${apiKeys.PIXABAY_API_KEY}`;
+    this.apiUrl = `https://pixabay.com/api/?${keyParam}&${this.getStaticParams()}`;
+  }
 
   async getImageInfo(country: string, city: string): Promise<ImageInfo> {
     try {
@@ -39,14 +45,7 @@ export class PixabayService extends BaseHttpService {
   }
 
   private getStaticParams(): string {
-    const params = [
-      this.keyParam,
-      this.typeParam,
-      this.orientationParam,
-      this.safeParam,
-      this.perPageParam,
-      this.categoryParam
-    ];
-    return `?${params.join('&')}`;
+    const params = [this.typeParam, this.orientationParam, this.safeParam, this.perPageParam, this.categoryParam];
+    return `${params.join('&')}`;
   }
 }

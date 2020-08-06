@@ -3,13 +3,19 @@ import { BaseHttpService } from '../../common/service/base-http.service';
 import { GeoCodeAddress } from '../model/geonames/geo-code-address.model';
 import { AxiosResponse } from 'axios';
 import { GeonamesResponse } from '../model/geonames/geonames.response';
+import { ApiKeysService } from './api-keys.service';
 
 /**
  * Wouldn't use this API but it's an Udacity requirement so kept it as a fallback.
  */
 @Injectable()
 export class GeoNamesService extends BaseHttpService {
-  private readonly apiUrl = `https://secure.geonames.org/geoCodeAddressJSON?username=${process.env.GEO_NAMES_USERNAME}&q=`;
+  private readonly apiUrl: string;
+
+  constructor(keyService: ApiKeysService) {
+    super();
+    this.apiUrl = `https://secure.geonames.org/geoCodeAddressJSON?username=${keyService.GEO_NAMES_USERNAME}&q=`;
+  }
 
   getGeoCodeAddress(location: string): Promise<GeoCodeAddress> {
     return this.axios

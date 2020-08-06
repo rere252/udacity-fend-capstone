@@ -6,10 +6,11 @@ import { GeoNamesService } from './service/geo-names.service';
 import { WeatherbitService } from './service/weatherbit.service';
 import { PixabayService } from './service/pixabay.servce';
 import { HereMapsService } from './service/here-maps.service';
+import { ApiKeysService } from './service/api-keys.service';
 
 const controllers = [TripController];
 const routers = [ApiRouter];
-const services = [GeoNamesService, WeatherbitService, PixabayService, HereMapsService];
+const services = [ApiKeysService, GeoNamesService, WeatherbitService, PixabayService, HereMapsService];
 const util = [];
 
 const declarations = [...controllers, ...routers, ...services, ...util, Server];

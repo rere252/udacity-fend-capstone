@@ -2,14 +2,20 @@ import { Injectable } from 'injection-js';
 import { WeatherInfo } from '../../common/model/weather-info.model';
 import { BaseHttpService } from '../../common/service/base-http.service';
 import { Position } from '../model/position.model';
+import { ApiKeysService } from './api-keys.service';
 
 @Injectable()
 export class WeatherbitService extends BaseHttpService {
-  private readonly apiKey = process.env.WEATHERBIT_API_KEY;
-  private readonly keyArg = `key=${this.apiKey}`;
   private readonly baseUrl = 'https://api.weatherbit.io/v2.0';
-  private readonly currentWeatherUrl = `${this.baseUrl}/current?${this.keyArg}`;
-  private readonly weatherForecastUrl = `${this.baseUrl}/forecast/daily?${this.keyArg}`;
+  private readonly currentWeatherUrl: string;
+  private readonly weatherForecastUrl: string;
+
+  constructor(keyService: ApiKeysService) {
+    super();
+    const keyParam = `key=${keyService.WEATHERBIT_API_KEY}`;
+    this.currentWeatherUrl = `${this.baseUrl}/current?${keyParam}`;
+    this.weatherForecastUrl = `${this.baseUrl}/forecast/daily?${keyParam}`;
+  }
 
   getCurrentWeather(position: Position): Promise<WeatherInfo> {
     return this.getWeatherByLatLon(this.currentWeatherUrl, position);
