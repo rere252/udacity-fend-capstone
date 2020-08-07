@@ -30,8 +30,7 @@ export class PixabayService extends BaseHttpService {
       }
       const hit = imgURLs.hits[0];
       const imgInf: ImageInfo = {
-        imageUrl: hit?.webformatURL,
-        height: hit?.webformatHeight
+        largeImageUrl: hit?.largeImageURL
       };
       return Promise.resolve(imgInf);
     } catch (e) {

@@ -27,10 +27,9 @@ export class TripSummaryComponent extends BaseComponent {
     this.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 
-  // TODO possibly avoid reflow when loading.
   private getBanner(): HTMLImageElement {
     const banner = document.createElement('img');
-    banner.src = this._tripInfo.image.imageUrl;
+    banner.src = this._tripInfo.image.largeImageUrl;
     banner.alt = `${this._tripInfo.label}`;
     banner.className = `${this.tripSummaryClass}__banner`;
     return banner;
@@ -39,11 +38,18 @@ export class TripSummaryComponent extends BaseComponent {
   private getTextSummary(): HTMLElement {
     const summaryDiv = document.createElement('div');
     summaryDiv.className = `${this.tripSummaryClass}__text`;
-    summaryDiv.appendChild(this.getDestinationHeading());
-    summaryDiv.appendChild(this.getDepartureHeading());
-    summaryDiv.appendChild(this.getDaysCountdown());
+    summaryDiv.appendChild(this.getGeneralInfo());
     summaryDiv.appendChild(this.getWeather());
     return summaryDiv;
+  }
+
+  private getGeneralInfo() {
+    const div = document.createElement('div');
+    div.className = `${this.tripSummaryClass}__general`;
+    div.appendChild(this.getDestinationHeading());
+    div.appendChild(this.getDepartureHeading());
+    div.appendChild(this.getDaysCountdown());
+    return div;
   }
 
   private getDestinationHeading(): HTMLElement {
@@ -62,7 +68,7 @@ export class TripSummaryComponent extends BaseComponent {
 
   private getWeather(): HTMLElement {
     const heading = document.createElement('h3');
-    heading.style.marginBottom = '0.5rem';
+    heading.classList.add(`${this.tripSummaryClass}__text__weather-heading`);
     heading.textContent = 'Weather';
     const details = document.createElement('ul');
     details.style.margin = '0';

@@ -2,17 +2,35 @@
 
 .trip-summary {
   font-weight: 300;
-  min-width: 100vw;
+  min-width: 350px;
+  width: 100vw;
   min-height: 74vh;
   margin: 2rem;
   display: flex;
   flex-direction: column;
+  background: #fff;
+  color: #000;
 
   &__banner {
-    min-width: 100%;
+    max-width: 100%;
+    height: 30vh;
+    max-height: 30vh;
+    object-fit: cover;
   }
 
+  $summary-element-margin: 2rem;
+
   &__text {
+    display: flex;
     margin: v.$standard-margin;
+    flex-wrap: wrap;
+
+    & > * {
+      margin-left: $summary-element-margin;
+    }
+
+    &__weather-heading {
+      margin: 0.5rem 0 0.5rem;
+    }
   }
 }

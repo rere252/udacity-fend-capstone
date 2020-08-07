@@ -3,7 +3,7 @@ import { Injectable } from 'injection-js';
 import { BaseController } from './base.controller';
 import { GeoNamesService } from '../service/geo-names.service';
 import { WeatherbitService } from '../service/weatherbit.service';
-import { PixabayService } from '../service/pixabay.servce';
+import { PixabayService } from '../service/pixabay.service';
 import { HereMapsService } from '../service/here-maps.service';
 import { Position } from '../model/position.model';
 import { TripInfoResponse } from '../../common/model/trip-info.response';

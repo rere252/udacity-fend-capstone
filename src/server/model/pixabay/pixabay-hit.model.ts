@@ -1,4 +1,3 @@
 export interface PixabayHit {
-  webformatURL: string;
-  webformatHeight: number;
+  largeImageURL: string;
 }
