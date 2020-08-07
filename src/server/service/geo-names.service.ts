@@ -27,7 +27,7 @@ export class GeoNamesService extends BaseHttpService {
       });
   }
 
-  private getQueryUrl(location: string): string {
+  public getQueryUrl(location: string): string {
     return encodeURI(`${this.apiUrl}${location}`);
   }
 }

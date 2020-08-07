@@ -31,15 +31,16 @@ export class WeatherbitService extends BaseHttpService {
         .get(this.getLatLonUrl(url, position))
         // axios response data + api data
         .then((r) => this.removeExcessProps(r.data?.data[0]))
-        .catch(() => {
+        .catch((e) => {
+          console.error(e);
           throw new Error('Failed to get weather data.');
         })
     );
   }
 
   private getLatLonUrl(endpointUrl: string, position: Position) {
-    const adr = position;
-    return `${endpointUrl}&lat=${adr.lat}&lon=${adr.lng}`;
+    const pos = position;
+    return `${endpointUrl}&lat=${pos.lat}&lon=${pos.lng}`;
   }
 
   private removeExcessProps(weatherInfo: WeatherInfo): WeatherInfo {

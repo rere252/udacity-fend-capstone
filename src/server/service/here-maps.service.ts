@@ -27,7 +27,7 @@ export class HereMapsService extends BaseHttpService {
       });
   }
 
-  private getQueryUrl(location: string) {
+  getQueryUrl(location: string): string {
     const query = encodeURI(location);
     return `${this.apiUrl}&q=${query}`;
   }
