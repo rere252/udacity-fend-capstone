@@ -1,16 +1,8 @@
 @use './variables' as v;
+@use './util' as u;
 
 .submit-button {
   margin: 0.25rem;
   padding: 0.25rem;
   font-size: 1rem;
-  font-weight: 300;
-  border-radius: 0.25rem;
-  background-color: #fff;
-  &:hover {
-    background: rgb(230, 230, 230);
-  }
-  &:active {
-    margin-bottom: -1px;
-  }
 }

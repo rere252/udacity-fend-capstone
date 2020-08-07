@@ -1,3 +1,15 @@
 .flex-end {
   align-self: flex-end;
 }
+
+@mixin button-common {
+  font-weight: 300;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  &:hover {
+    background: rgb(230, 230, 230);
+  }
+  &:active {
+    margin-bottom: -1px;
+  }
+}

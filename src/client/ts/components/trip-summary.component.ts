@@ -1,14 +1,21 @@
 import { BaseComponent } from './base-component';
 import { TripInfoResponse } from '../../../common/model/trip-info.response';
+import { TripStorageService } from '../service/trip-storage.service';
 
 export class TripSummaryComponent extends BaseComponent {
   private readonly tripSummaryClass = 'trip-summary';
   private _tripInfo: TripInfoResponse;
   set tripInfo(info: TripInfoResponse) {
     this._tripInfo = info;
-    // It's initially a date string;
-    this._tripInfo.departure = new Date(this._tripInfo.departure);
-    this.updateDOM();
+    if (this._tripInfo) {
+      // It's initially a date string;
+      this._tripInfo.departure = new Date(this._tripInfo.departure);
+      this.updateDOM();
+    }
+  }
+
+  constructor(private storage: TripStorageService, id: string) {
+    super(id);
   }
 
   getTemplate(): string {
@@ -47,6 +54,7 @@ export class TripSummaryComponent extends BaseComponent {
     const div = document.createElement('div');
     div.className = `${this.tripSummaryClass}__general`;
     div.appendChild(this.getDestinationHeading());
+    div.appendChild(this.getSaveButton());
     div.appendChild(this.getDepartureHeading());
     div.appendChild(this.getDaysCountdown());
     return div;
@@ -56,6 +64,14 @@ export class TripSummaryComponent extends BaseComponent {
     const heading = document.createElement('h2');
     heading.textContent = this._tripInfo.label;
     return heading;
+  }
+
+  private getSaveButton(): HTMLButtonElement {
+    const saveButton = document.createElement('button');
+    saveButton.type = 'button';
+    saveButton.textContent = 'Save';
+    saveButton.onclick = () => this.storage.saveTrip(this._tripInfo);
+    return saveButton;
   }
 
   private getDepartureHeading(): HTMLElement {
