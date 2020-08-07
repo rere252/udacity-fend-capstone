@@ -7,12 +7,9 @@ function start(): void {
   // Check that service workers are supported
   if ('serviceWorker' in navigator) {
     // Use the window load event to keep the page load performant
-    // TODO uncomment when project is done.
-    /*     window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/service-worker.js')
-        .catch(() => console.warn('Ignore if in dev mode'));
-    }); */
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').catch(() => console.warn('Ignore if in dev mode'));
+    });
   }
   const client: Client = container.get(Client);
   client.init();
