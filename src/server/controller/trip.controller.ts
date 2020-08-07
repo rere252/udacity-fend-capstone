@@ -7,6 +7,8 @@ import { PixabayService } from '../service/pixabay.service';
 import { HereMapsService } from '../service/here-maps.service';
 import { Position } from '../model/position.model';
 import { TripInfoResponse } from '../../common/model/trip-info.response';
+import { daysBetween } from '../../common/util';
+import { WeatherInfo } from '../../common/model/weather-info.model';
 
 @Injectable()
 export class TripController extends BaseController {
@@ -24,10 +26,16 @@ export class TripController extends BaseController {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   async handle(req: Request, resp: Response, next: NextFunction) {
     const destination: string = req.body.destination;
-    const departure: Date = req.body.departure;
+    const departure: Date = new Date(req.body.departure);
     try {
       const labeledPos = await this.getLabeledPosition(destination);
-      const weather = await this.weatherService.getCurrentWeather(labeledPos.position);
+      const daysUntilTrip = daysBetween(departure, new Date());
+      let weather: WeatherInfo;
+      if (daysUntilTrip <= 7) {
+        weather = await this.weatherService.getCurrentWeather(labeledPos.position);
+      } else {
+        weather = await this.weatherService.getWeatherForecast(labeledPos.position);
+      }
       const image = await this.imageService.getImageInfo(labeledPos.country, labeledPos.city);
       const tripInfo: TripInfoResponse = {
         label: labeledPos.label,

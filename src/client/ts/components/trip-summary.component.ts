@@ -1,6 +1,7 @@
 import { BaseComponent } from './base-component';
 import { TripInfoResponse } from '../../../common/model/trip-info.response';
 import { TripStorageService } from '../service/trip-storage.service';
+import { daysBetween } from '../../../common/util';
 
 export class TripSummaryComponent extends BaseComponent {
   private readonly tripSummaryClass = 'trip-summary';
@@ -105,19 +106,9 @@ export class TripSummaryComponent extends BaseComponent {
 
   private getDaysCountdown(): HTMLElement {
     const heading = document.createElement('h3');
-    const daysDiff = this.daysBetween(new Date(), this._tripInfo.departure);
+    const daysDiff = daysBetween(new Date(), this._tripInfo.departure);
     const days = daysDiff !== 1 ? 'days' : 'day';
     heading.innerText = `${daysDiff} ${days} until departure`;
     return heading;
-  }
-
-  private daysBetween(d1: Date, d2: Date) {
-    const diffMS = Math.abs(d1.getTime() - d2.getTime());
-    const secInMS = 1000;
-    const minuteInMS = 60 * secInMS;
-    const hourInMS = 60 * minuteInMS;
-    const dayInMS = 24 * hourInMS;
-    const diffDays = Math.ceil(diffMS / dayInMS);
-    return diffDays;
   }
 }
